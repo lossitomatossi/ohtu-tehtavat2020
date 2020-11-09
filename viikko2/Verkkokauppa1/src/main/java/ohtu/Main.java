@@ -12,8 +12,8 @@ public class Main {
 
         Viitegeneraattori viitegen = ctx.getBean(Viitegeneraattori.class);
         Kirjanpito kirjanpito = ctx.getBean(Kirjanpito.class);
-        Varasto varasto = new Varasto(kirjanpito);
-        Pankki pankki = new Pankki(kirjanpito);
+        Varasto varasto = ctx.getBean(Varasto.class);
+        Pankki pankki = ctx.getBean(Pankki.class);
         Kauppa kauppa = new Kauppa(varasto,
                 pankki,
                 viitegen);
