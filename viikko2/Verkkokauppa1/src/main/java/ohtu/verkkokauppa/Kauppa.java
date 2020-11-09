@@ -11,9 +11,9 @@ public class Kauppa {
     public Kauppa(VarastoInterface varastoI,
             PankkiInterface pankkiI,
             ViitegeneraattoriInterface viiteI) {
-        varasto = varastoI;
-        pankki = pankkiI;
-        viitegeneraattori = viiteI;
+        this.varasto = varastoI;
+        this.pankki = pankkiI;
+        this.viitegeneraattori = viiteI;
         kaupanTili = "33333-44455";
     }
 
