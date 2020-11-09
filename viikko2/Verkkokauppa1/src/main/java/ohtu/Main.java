@@ -5,9 +5,10 @@ import ohtu.verkkokauppa.*;
 public class Main {
 
     public static void main(String[] args) {
+        Viitegeneraattori viitegen = new Viitegeneraattori();
         Kauppa kauppa = new Kauppa(Varasto.getInstance(),
                 Pankki.getInstance(),
-                Viitegeneraattori.getInstance());
+                viitegen);
 
         // kauppa hoitaa yhden asiakkaan kerrallaan seuraavaan tapaan:
         kauppa.aloitaAsiointi();
