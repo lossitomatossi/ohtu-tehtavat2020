@@ -5,13 +5,13 @@ public class Kauppa {
     private Varasto varasto;
     private Pankki pankki;
     private Ostoskori ostoskori;
-    private Viitegeneraattori viitegeneraattori;
+    private ViitegeneraattoriInterface viitegeneraattori;
     private String kaupanTili;
 
-    public Kauppa() {
+    public Kauppa(ViitegeneraattoriInterface viite) {
         varasto = Varasto.getInstance();
         pankki = Pankki.getInstance();
-        viitegeneraattori = Viitegeneraattori.getInstance();
+        viitegeneraattori = viite;
         kaupanTili = "33333-44455";
     }
 
