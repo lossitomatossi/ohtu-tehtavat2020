@@ -14,7 +14,7 @@ public class Varasto {
         return instanssi;
     }
     
-    private Kirjanpito kirjanpito;
+    private KirjanpitoInterface kirjanpito;
     private HashMap<Tuote, Integer> saldot;  
     
     private Varasto() {
