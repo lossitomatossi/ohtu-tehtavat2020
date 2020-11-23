@@ -4,6 +4,7 @@ import ohtu.verkkokauppa.Viitegeneraattori;
 import ohtu.verkkokauppa.Kauppa;
 import ohtu.verkkokauppa.Pankki;
 import ohtu.verkkokauppa.Varasto;
+import ohtu.verkkokauppa.Tuote;
 import org.junit.Before;
 import org.junit.Test;
 import static org.junit.Assert.*;
@@ -66,7 +67,7 @@ public class KauppaTest {
 
         verify(pankki).tilisiirto("pekka", 42, "12345", "33333-44455", 7);
     }
-    
+
     @Test
     public void pankinMetodiTilisiirtoOikeinKunMontaSamaaTuotetta() {
         k.aloitaAsiointi();
@@ -76,7 +77,7 @@ public class KauppaTest {
 
         verify(pankki).tilisiirto("pekka", 42, "12345", "33333-44455", 4);
     }
-    
+
     @Test
     public void pankinMetodiTilisiirtoOikeinKunSaldoEiRiita() {
         k.aloitaAsiointi();
@@ -85,5 +86,65 @@ public class KauppaTest {
         k.tilimaksu("pekka", "12345");
 
         verify(pankki).tilisiirto("pekka", 42, "12345", "33333-44455", 2);
+    }
+
+    @Test
+    public void kaupanMetodiAloitaAsiointiNollaaOstokset() {
+        k.aloitaAsiointi();
+        k.lisaaKoriin(2);
+        k.lisaaKoriin(3);
+        k.tilimaksu("pekka", "12345");
+
+        verify(pankki).tilisiirto("pekka", 42, "12345", "33333-44455", 2);
+        k.aloitaAsiointi();
+        k.lisaaKoriin(1);
+        k.lisaaKoriin(2);
+        k.tilimaksu("aatu", "54321");
+
+        verify(pankki).tilisiirto("aatu", 42, "54321", "33333-44455", 7);
+    }
+
+    @Test
+    public void kauppaPyytaaUudenViitenumeronMaksutapahtumille() {
+        Viitegeneraattori mockViite = mock(Viitegeneraattori.class);
+        // määritellään että metodi palauttaa ensimmäisellä kutsukerralla 1, toisella 2 
+        // ja kolmannella 3
+        when(mockViite.uusi())
+                .thenReturn(1)
+                .thenReturn(2)
+                .thenReturn(3);
+
+        Kauppa kauppa = new Kauppa(varasto, pankki, mockViite);
+
+        kauppa.aloitaAsiointi();
+        kauppa.lisaaKoriin(2);
+        kauppa.lisaaKoriin(3);
+        kauppa.tilimaksu("pekka", "12345");
+        verify(pankki).tilisiirto("pekka", 1, "12345", "33333-44455", 2);
+
+        kauppa.aloitaAsiointi();
+        kauppa.lisaaKoriin(1);
+        kauppa.lisaaKoriin(2);
+        kauppa.tilimaksu("aatu", "54321");
+        verify(pankki).tilisiirto("aatu", 2, "54321", "33333-44455", 7);
+
+        kauppa.aloitaAsiointi();
+        kauppa.lisaaKoriin(2);
+        kauppa.lisaaKoriin(3);
+        kauppa.tilimaksu("pekka", "12345");
+        verify(pankki).tilisiirto("pekka", 3, "12345", "33333-44455", 2);
+    }
+    
+    @Test
+    public void poistaKoristaPalauttaaVarastoon() {
+        k.aloitaAsiointi();
+        k.lisaaKoriin(2);
+        
+        verify(varasto, times(1)).haeTuote(2);
+        Tuote t = varasto.haeTuote(2);
+        k.poistaKorista(2);
+        verify(varasto, times(1)).palautaVarastoon(t);
+        
+        
     }
 }
