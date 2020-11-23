@@ -6,7 +6,7 @@ public class IntJoukko {
             OLETUSKASVATUS = 5;  // luotava uusi taulukko on 
     // näin paljon isompi kuin vanha
     private int kasvatuskoko;     // Uusi taulukko on tämän verran vanhaa suurempi.
-    private int[] ljono;      // Joukon luvut säilytetään taulukon alkupäässä. 
+    private int[] numeroJono;      // Joukon luvut säilytetään taulukon alkupäässä. 
     private int alkioidenLkm;    // Tyhjässä joukossa alkioiden_määrä on nolla. 
 
     public IntJoukko() {
@@ -14,9 +14,9 @@ public class IntJoukko {
     }
 
     private void alustaJono(int koko) {
-        ljono = new int[koko];
-        for (int i = 0; i < ljono.length; i++) {
-            ljono[i] = 0;
+        numeroJono = new int[koko];
+        for (int i = 0; i < numeroJono.length; i++) {
+            numeroJono[i] = 0;
         }
         alkioidenLkm = 0;
         this.kasvatuskoko = OLETUSKASVATUS;
@@ -42,23 +42,18 @@ public class IntJoukko {
     }
 
     public boolean lisaa(int luku) {
-
-        int eiOle = 0;
         if (alkioidenLkm == 0) {
-            ljono[0] = luku;
+            numeroJono[0] = luku;
             alkioidenLkm++;
             return true;
-        } else {
         }
         if (!kuuluu(luku)) {
-            ljono[alkioidenLkm] = luku;
-            alkioidenLkm++;
-            if (alkioidenLkm % ljono.length == 0) {
-                int[] taulukkoOld = new int[ljono.length];
-                taulukkoOld = ljono;
-                kopioiTaulukko(ljono, taulukkoOld);
-                ljono = new int[alkioidenLkm + kasvatuskoko];
-                kopioiTaulukko(taulukkoOld, ljono);
+            numeroJono[alkioidenLkm++] = luku;
+            if (alkioidenLkm % numeroJono.length == 0) {
+                int[] taulukkoOld = numeroJono;
+                kopioiTaulukko(numeroJono, taulukkoOld);
+                numeroJono = new int[alkioidenLkm + kasvatuskoko];
+                kopioiTaulukko(taulukkoOld, numeroJono);
             }
             return true;
         }
@@ -67,7 +62,7 @@ public class IntJoukko {
 
     public boolean kuuluu(int luku) {
         for (int i = 0; i < alkioidenLkm; i++) {
-            if (luku == ljono[i]) {
+            if (luku == numeroJono[i]) {
                 return true;
             }
         }
@@ -78,17 +73,18 @@ public class IntJoukko {
         int kohta = -1;
         int apu;
         for (int i = 0; i < alkioidenLkm; i++) {
-            if (luku == ljono[i]) {
+            if (luku == numeroJono[i]) {
                 kohta = i; //siis luku löytyy tuosta kohdasta :D
-                ljono[kohta] = 0;
+                numeroJono[kohta] = 0;
                 break;
             }
+            
         }
         if (kohta != -1) {
             for (int j = kohta; j < alkioidenLkm - 1; j++) {
-                apu = ljono[j];
-                ljono[j] = ljono[j + 1];
-                ljono[j + 1] = apu;
+                apu = numeroJono[j];
+                numeroJono[j] = numeroJono[j + 1];
+                numeroJono[j + 1] = apu;
             }
             alkioidenLkm--;
             return true;
@@ -98,9 +94,7 @@ public class IntJoukko {
     }
 
     private void kopioiTaulukko(int[] vanha, int[] uusi) {
-        for (int i = 0; i < vanha.length; i++) {
-            uusi[i] = vanha[i];
-        }
+        System.arraycopy(vanha, 0, uusi, 0, vanha.length);
 
     }
 
@@ -110,27 +104,27 @@ public class IntJoukko {
 
     @Override
     public String toString() {
-        if (alkioidenLkm == 0) {
-            return "{}";
-        } else if (alkioidenLkm == 1) {
-            return "{" + ljono[0] + "}";
-        } else {
-            String tuotos = "{";
-            for (int i = 0; i < alkioidenLkm - 1; i++) {
-                tuotos += ljono[i];
-                tuotos += ", ";
-            }
-            tuotos += ljono[alkioidenLkm - 1];
-            tuotos += "}";
-            return tuotos;
+        switch (alkioidenLkm) {
+            case 0:
+                return "{}";
+            case 1:
+                return "{" + numeroJono[0] + "}";
+            default:
+                String jononPrint = "{";
+                for (int i = 0; i < alkioidenLkm - 1; i++) {
+                    jononPrint += numeroJono[i];
+                    jononPrint += ", ";
+                }
+                jononPrint += numeroJono[alkioidenLkm - 1];
+                jononPrint += "}";
+                return jononPrint;
+
         }
     }
 
     public int[] toIntArray() {
         int[] taulu = new int[alkioidenLkm];
-        for (int i = 0; i < taulu.length; i++) {
-            taulu[i] = ljono[i];
-        }
+        System.arraycopy(numeroJono, 0, taulu, 0, taulu.length);
         return taulu;
     }
 
