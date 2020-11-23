@@ -10,7 +10,11 @@ public class IntJoukko {
     private int alkioidenLkm;    // Tyhjässä joukossa alkioiden_määrä on nolla. 
 
     public IntJoukko() {
-        ljono = new int[KAPASITEETTI];
+        alustaJono(KAPASITEETTI);
+    }
+
+    private void alustaJono(int koko) {
+        ljono = new int[koko];
         for (int i = 0; i < ljono.length; i++) {
             ljono[i] = 0;
         }
@@ -22,13 +26,7 @@ public class IntJoukko {
         if (kapasiteetti < 0) {
             return;
         }
-        ljono = new int[kapasiteetti];
-        for (int i = 0; i < ljono.length; i++) {
-            ljono[i] = 0;
-        }
-        alkioidenLkm = 0;
-        this.kasvatuskoko = OLETUSKASVATUS;
-
+        alustaJono(kapasiteetti);
     }
 
     public IntJoukko(int kapasiteetti, int kasvatuskoko) {
@@ -38,11 +36,7 @@ public class IntJoukko {
         if (kasvatuskoko < 0) {
             throw new IndexOutOfBoundsException("Kasvatuskoko ei saa olla negatiivinen ");
         }
-        ljono = new int[kapasiteetti];
-        for (int i = 0; i < ljono.length; i++) {
-            ljono[i] = 0;
-        }
-        alkioidenLkm = 0;
+        alustaJono(kapasiteetti);
         this.kasvatuskoko = kasvatuskoko;
 
     }
@@ -77,9 +71,7 @@ public class IntJoukko {
                 return true;
             }
         }
-
         return false;
-
     }
 
     public boolean poista(int luku) {
