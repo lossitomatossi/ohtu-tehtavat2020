@@ -77,8 +77,7 @@ public class IntJoukko {
                 kohta = i; //siis luku löytyy tuosta kohdasta :D
                 numeroJono[kohta] = 0;
                 break;
-            }
-            
+            }   
         }
         if (kohta != -1) {
             for (int j = kohta; j < alkioidenLkm - 1; j++) {
@@ -89,7 +88,6 @@ public class IntJoukko {
             alkioidenLkm--;
             return true;
         }
-
         return false;
     }
 
