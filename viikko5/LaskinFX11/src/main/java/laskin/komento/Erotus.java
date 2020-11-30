@@ -26,7 +26,11 @@ public class Erotus extends Komento {
 
     @Override
     public void peru() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        this.sovellus.plus(arvo);
+        this.tulostekentta.setText(Integer.toString(this.sovellus.tulos()));
+        this.syotekentta.setText("");
+        this.nollaa.disableProperty().set(false);
+        this.undo.disableProperty().set(true);
     }
     
 }
