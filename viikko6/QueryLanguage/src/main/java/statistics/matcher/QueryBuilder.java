@@ -4,7 +4,7 @@ public class QueryBuilder {
     Matcher matcher;
 
     public QueryBuilder() {
-        this.matcher = new And();
+        this.matcher = new All();
     }
     
     public Matcher build() {
@@ -28,6 +28,8 @@ public class QueryBuilder {
         return this;
     }
     
-    
-    
+    public QueryBuilder oneOf(Matcher... matchers) {
+        this.matcher = new Or(matchers);
+        return this;
+    }
 }
