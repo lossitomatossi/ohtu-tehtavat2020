@@ -13,27 +13,18 @@ public class Main {
                 new HasAtLeast(5, "assists"),
                 new PlaysIn("PHI")
         );
+
         Matcher n = new And(
-                new Not(new HasAtLeast(1, "goals")),
-                new PlaysIn("NYR")
+                new HasAtLeast(50, "points"),
+                new Or(
+                        new PlaysIn("NYR"),
+                        new PlaysIn("NYI"),
+                        new PlaysIn("BOS")
+                )
         );
 
-        Matcher s = new And(
-                new HasFewerThan(1, "goals"),
-                new PlaysIn("NYR")
-        );
-
-//        for (Player player : stats.matches(m)) {
-//            System.out.println(player);
-//        }
         for (Player player : stats.matches(n)) {
             System.out.println(player);
         }
-        
-        for (Player player : stats.matches(s)) {
-            System.out.println(player);
-        }
-        
-        System.out.println(stats.matches(new All()).size());
     }
 }
